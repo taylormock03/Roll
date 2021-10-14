@@ -26,8 +26,10 @@ class Player:
         
         # Calculate the value of each dice
         totalGain = 0
+        print("\nYou rolled: ")
         for face in rollFaces:
+            print(face)
             totalGain += face.calculateValue(rollFaces,self.passiveBonuses)
             self.money += totalGain
-        print(totalGain)
+        print("\nYou earned: $" +str(totalGain)+"\n")
         self.noRolls-=1

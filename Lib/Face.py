@@ -11,6 +11,9 @@ class Face:
     def calculateValue():
         pass
 
+    def __str__(self) -> str:
+        return str(self.name)
+
 # This is your typical numeric faces (e.g a 6 on a dice)
 class NumberFace(Face):
     number = 0 
