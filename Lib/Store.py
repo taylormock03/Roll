@@ -22,7 +22,7 @@ class Store:
             itemId = randint(0,NUM_UPGRADE_TYPES)
 
             if itemId ==0:
-                self.stock.append(FaceReplaceUpgrade(randint(10,100), 
+                self.stock.append(NumberReplaceUpgrade(randint(10,100), 
                                                         self.level,
                                                         self.refreshes))
     # This will calculate the cost of a shop refresh
@@ -54,7 +54,7 @@ class Store:
 
     def buyStore(self,player):
         try:
-            playerInput = int(input("What number item would you like?\n>"))-1
+            playerInput = int(input("What number item would you like?\n> "))-1
 
             if playerInput==len(self.stock) and player.money>= self.refreshPrice:
                 self.refreshStock()

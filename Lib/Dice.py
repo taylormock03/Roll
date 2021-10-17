@@ -16,3 +16,14 @@ class Dice:
     # Chooses a random 
     def roll(self):
         return self.faces[randint(0,5)]
+
+    def __str__(self):
+        faceList="[" 
+        for x in self.faces:
+            faceList+= str(x)+", "
+        faceList+= "]"
+
+        return faceList
+
+    def setFace(self, pos, newFace):
+        self.faces[pos] = newFace
