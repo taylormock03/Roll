@@ -7,7 +7,7 @@ class Upgrade:
     # As levels go up, items become more expensive but also more powerful
     level = 1
     def __init__(self, cost, level,refreshes) -> None:
-        self.cost = cost*level**refreshes
+        self.cost = cost*refreshes**level
         self.level = level
 
     # This is used for upgrades that overwrite the value of other die faces
@@ -25,7 +25,7 @@ class FaceReplaceUpgrade(Upgrade):
 
     def __init__(self, cost, level, refreshes) -> None:
         super().__init__(cost,level,refreshes)
-        self.number = randint(1,10*level)
+        self.number = min(randint(1,max(10*level,1)),99)
         self.name = "Face Replace: " + str(self.number)
     
     def buy(self, player):
