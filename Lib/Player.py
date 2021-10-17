@@ -22,19 +22,33 @@ class Player:
     # Note: the output is only for when the user chooses to roll once
     def roll(self, output=True):
         rollFaces = []
+
         # Find which face was rolled for each dice 
         for x in self.dice:
             rollFaces.append(x.roll())
         
-        # Calculate the value of each dice
+        # print the face of each dice
         totalGain = 0
         if output:
             print("\nYou rolled: ")
+            faceString = "["            
+            for face in rollFaces:
+                faceString += str(face) + ", "
+
+            faceString+="]"
+            print(faceString)
+
         for face in rollFaces:
-            if output:
-                print(face)
+
+            # calculate the value of each face
             totalGain += face.calculateValue(rollFaces,self.passiveBonuses)
-            self.money += totalGain
+
+            # calculate the effects of increment
+            if face.increment == True and face.number<99:
+                face.number+=1
+                face.name+=1
+
+        self.money += totalGain
         if output:
             print("\nYou earned: $" +str(totalGain)+"\n")
         self.noRolls-=1

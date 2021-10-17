@@ -3,7 +3,7 @@ from Lib.Upgrades import *
 # This is represents how many types of upgrades there are. 
 # I don't know if there is a way to dynamically generate this number 
 # based on the number of child classes of Upgrade
-NUM_UPGRADE_TYPES = 0
+NUM_UPGRADE_TYPES = 3
 
 class Store:
     def __init__(self):
@@ -19,12 +19,23 @@ class Store:
         # e.g if store = level3, it will select 2*3+2 = 8 items
         self.stock=[]
         for x in range(0,max(2+self.level*2,4)):
-            itemId = randint(0,NUM_UPGRADE_TYPES)
+            itemId = randint(1,NUM_UPGRADE_TYPES)
 
-            if itemId ==0:
+            if itemId ==1:
                 self.stock.append(NumberReplaceUpgrade(randint(10,100), 
                                                         self.level,
                                                         self.refreshes))
+
+            elif itemId ==2:
+                self.stock.append(NumberAddUpgrade(randint(10,100), 
+                                                        self.level,
+                                                        self.refreshes))
+
+            elif itemId ==3:
+                self.stock.append(Incrementor(randint(10,100), 
+                                                        self.level,
+                                                        self.refreshes))
+
     # This will calculate the cost of a shop refresh
     def refreshCost(self):
         self.refreshPrice = max(100*self.level*self.refreshes,100)
