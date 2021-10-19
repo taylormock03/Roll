@@ -20,7 +20,7 @@ class Upgrade:
         for x in dice:
             print("Dice #" +str(i))
             print(x)
-        
+            i+=1
         while True:
             try:
                 playerInput = input("which die and face would you like to replace? e.g 1,3 means first die, 3rd face\n> ")
@@ -61,6 +61,7 @@ class Upgrade:
         for x in dice:
             print("Dice #" +str(i))
             print(x)
+            i+=1
         
         while True:
             try:
@@ -69,18 +70,20 @@ class Upgrade:
                 playerInput=playerInput.split(",")
 
                 chosenDice = dice[int(playerInput[0])]
+                chosenFace = chosenDice[int(playerInput[1])-1]
 
-                if self.special == "Increment":
-                    chosenDice.faces[int(playerInput[1])-1].increment = True
+                # increment won't work on non-numeric faces, therefore I need to reject faces that aren't NumberFaces
+                if self.special == "Increment" and isinstance(chosenFace,NumberFace):
+                    chosenFace.increment = True
 
                 elif self.special == "Glue":
-                    chosenDice.faces[int(playerInput[1])-1].glued = True
+                    chosenFace.glued = True
                 
                 elif self.special == "Reroll":
-                    chosenDice.faces[int(playerInput[1])-1].reroll = True
+                    chosenFace.reroll = True
 
                 elif self.special == "Weighted":
-                    chosenDice.faces[int(playerInput[1])-1].weighted = True
+                    chosenFace.weighted = True
 
                 else:
                     raise
@@ -148,6 +151,34 @@ class DieQuantityMultiplierUpgrade(Upgrade):
         self.multiplier = randint(5,10)
         self.name = "Die Quantity multiplier x" + str(self.multiplier)
         self.face = DieQuantityMultiplierFace(self.multiplier)
+
+    def buy(self, player):
+        self.replaceFace(player.dice)
+        self.quantity = 0
+        player.money -= self.cost
+
+
+class SingleFaceMultiplierUpgrade(Upgrade):
+    
+    def __init__(self, cost, level, refreshes) -> None:
+        super().__init__(cost, level, refreshes)
+        self.multiplier = randint(5,10)
+        self.name = "Single Face multiplier x" + str(self.multiplier)
+        self.face = SingleFaceMultiplerFace(self.multiplier)
+
+    def buy(self, player):
+        self.replaceFace(player.dice)
+        self.quantity = 0
+        player.money -= self.cost
+
+
+class MultiFaceMultiplierUpgrade(Upgrade):
+    
+    def __init__(self, cost, level, refreshes) -> None:
+        super().__init__(cost, level, refreshes)
+        self.multiplier = randint(5,15)
+        self.name = "Multi Face multiplier x" + str(self.multiplier)
+        self.face = MultiFaceMultiplerFace(self.multiplier)
 
     def buy(self, player):
         self.replaceFace(player.dice)
