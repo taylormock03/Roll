@@ -110,6 +110,8 @@ class NumberReplaceUpgrade(Upgrade):
         self.quantity = 0
         player.money -= self.cost
 
+# This upgrade's value will be added on top of the replaced face
+# e.g if this = 5 and you replace a 3 face, you will have an 8 face
 class NumberAddUpgrade(Upgrade):
 
     def __init__(self, cost, level, refreshes) -> None:
@@ -123,6 +125,8 @@ class NumberAddUpgrade(Upgrade):
         self.quantity = 0
         player.money -= self.cost
 
+# Every time a face with an incrementor is rolled, it will increase in value
+# Note: the max value for a face is 99
 class Incrementor(Upgrade):
     
     def __init__(self, cost, level, refreshes) -> None:
@@ -132,5 +136,20 @@ class Incrementor(Upgrade):
 
     def buy(self, player):
         self.addSpecial(player.dice)
+        self.quantity = 0
+        player.money -= self.cost
+
+# Whenever this is rolled it will give a result of (# of dice x multiplier)
+# e.g. if you have 5 dice with a multiplier of 10, it wil give a value of 50
+class DieQuantityMultiplierUpgrade(Upgrade):
+    
+    def __init__(self, cost, level, refreshes) -> None:
+        super().__init__(cost, level, refreshes)
+        self.multiplier = randint(5,10)
+        self.name = "Die Quantity multiplier x" + str(self.multiplier)
+        self.face = DieQuantityMultiplierFace(self.multiplier)
+
+    def buy(self, player):
+        self.replaceFace(player.dice)
         self.quantity = 0
         player.money -= self.cost

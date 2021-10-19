@@ -72,6 +72,7 @@ class Player:
 
     # Rolls the dice X times
     def rollX(self, rollLimit):
+
         print()
         rollLimit=int(rollLimit)
 
@@ -85,3 +86,8 @@ class Player:
             totalGain += self.roll(output=False)
             i+=1
         print("You rolled: " +str(rollLimit)+" times\nYou earned: $" +str(totalGain))
+    
+    # Adds a new d6 (regular) dice
+    def addDice(self, quantity = 1):
+        for x in range(0,quantity):
+            self.dice.append(Dice())

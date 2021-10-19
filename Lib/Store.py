@@ -3,7 +3,7 @@ from Lib.Upgrades import *
 # This is represents how many types of upgrades there are. 
 # I don't know if there is a way to dynamically generate this number 
 # based on the number of child classes of Upgrade
-NUM_UPGRADE_TYPES = 3
+NUM_UPGRADE_TYPES = 4
 
 class Store:
     def __init__(self):
@@ -31,8 +31,13 @@ class Store:
                                                         self.level,
                                                         self.refreshes))
 
-            elif itemId ==3:
+            elif itemId ==3 and self.level>=2:
                 self.stock.append(Incrementor(randint(10,100), 
+                                                        self.level,
+                                                        self.refreshes))
+
+            elif itemId ==4 and self.level>=2:
+                self.stock.append(DieQuantityMultiplierUpgrade(randint(10,100), 
                                                         self.level,
                                                         self.refreshes))
 
@@ -67,18 +72,22 @@ class Store:
         try:
             playerInput = int(input("What number item would you like?\n> "))-1
 
+            # Rerolls store stock
             if playerInput==len(self.stock) and player.money>= self.refreshPrice:
                 self.refreshStock()
                 self.refreshCost()
                 player.money -= self.refreshPrice
                 print("Store refreshed")
             
+            # Upgrades store, refreshes stock and gives a new dice
             elif playerInput==len(self.stock)+1 and player.money >= self.upgradePrice:
                 self.upgradeCost()
                 self.refreshCost()
                 self.refreshStock()
+                player.addDice()
                 player.money -= self.upgradePrice
                 print("Store upgraded and refreshed")
+                print("New Die Added")
 
             elif self.stock[playerInput].cost<= player.money and self.stock[playerInput].quantity>0:
                 self.stock[playerInput].buy(player)

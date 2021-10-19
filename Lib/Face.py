@@ -26,10 +26,23 @@ class NumberFace(Face):
     # Note that rollFaces is unnecesary for this method, but is used on other faces
     def calculateValue(self,rollFaces,playerBonuses):
         if playerBonuses != []:
-            # Change this later
+            # Passive bonuses have not yet been implemented
             return self.number*self.multiplier*playerBonuses
 
         else: 
             return self.number*self.multiplier
 
 
+class DieQuantityMultiplierFace(Face):
+
+    def __init__(self,multiplier):
+        self.multiplier = multiplier
+        self.name = "Die quantity x" + str(multiplier)
+
+    def calculateValue(self, rollFaces,playerBonuses):
+        if playerBonuses == []:
+            return self.multiplier*len(rollFaces)
+
+        # Passive bonuses have not yet been implemented
+        else:
+            return 1
